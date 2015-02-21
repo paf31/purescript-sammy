@@ -1,7 +1,6 @@
 {
   "name": "purescript-sammy",
-  "version": "0.0.1",
-  "homepage": "https://github.com/wfaler/purescript-sammy",
+  "homepage": "https://github.com/purescript-contrib/purescript-sammy",
   "description": "purescript-sammy",
   "keywords": [
     "purescript"
@@ -19,7 +18,7 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-jquery": "*",
-    "sammy":  "0.7.4"
+    "purescript-jquery": "~0.4.0",
+    "sammy": "~0.7.4"
   }
 }
