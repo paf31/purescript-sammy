@@ -1,6 +1,8 @@
 # purescript-sammy
 
-[Purescript](http://www.purescript.org/) bindings for [Sammy.js](http://sammyjs.org/), a Javascript, browser-based [Sinatra](http://www.sinatrarb.com/)-clone.
+[![Maintainer: paf31](https://img.shields.io/badge/maintainer-paf31-lightgrey.svg)](http://github.com/paf31) ![Sammy: 0.7.6](https://img.shields.io/badge/sammy-0.7.6-lightgrey.svg)
+
+[PureScript](http://www.purescript.org/) bindings for [Sammy.js](http://sammyjs.org/), a Javascript, browser-based [Sinatra](http://www.sinatrarb.com/)-clone.
 
 - [Module Documentation](docs/Sammy.md)
 - [Example](test/Main.purs)
