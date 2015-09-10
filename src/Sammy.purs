@@ -1,103 +1,73 @@
+-- | This module provides low-level PureScript bindings to the Sammy.js web framework.
 module Sammy
-(route, redirect, bindEvent,trigger,params,sammy,runApp,get,put,post,del, SammyCtx(..), Sammy(..),SammyApp(..),Path(..))
-where
+  ( route
+  , redirect
+  , bindEvent
+  , trigger
+  , params
+  , sammy
+  , runApp
+  , get
+  , put
+  , post
+  , del
+  , SammyCtx()
+  , SammyApp()
+  , SAMMY()
+  , Route()
+  ) where
+
+import Prelude
 
 import Control.Monad.Eff
 
+-- | The Sammy context contains URL parameters, and provides the ability to redirect to other routes.
 foreign import data SammyCtx :: *
+
+-- | A Sammy application, which can be used to associate routes with behaviors.
 foreign import data SammyApp :: *
-foreign import data Sammy :: !
 
-type Path = String
+-- | The effect associated with Sammy applications.
+foreign import data SAMMY :: !
 
-foreign import sammy
-"""function sammy(selector){
-     return function() {
-       return Sammy(selector, function(app){
-         return app;
-       });
-     };
-   }""":: forall a eff. String -> Eff (app :: Sammy | eff) SammyApp
+-- | A route is just a string
+type Route = String
 
-foreign import runApp
-"""function runApp(app){
-     return function(route){
-       return function (){
-         app.run(route);
-       };
-     };
-   }""" :: forall eff. SammyApp -> String -> Eff (app :: Sammy | eff) Unit 
+-- | Create a new Sammy application.
+foreign import sammy :: forall a eff. String -> Eff (sammy :: SAMMY | eff) SammyApp
 
-foreign import route
-"""function route(smy){
-    return function(verb){
-      return function(path){
-        return function(fn){
-          return function(){
-            smy.route(verb,path,function(s){
-              fn(s)();
-            });
-          };  
-        };
-      };
-    };
-  }""":: forall a eff. SammyApp -> String -> Path -> (SammyCtx -> Eff (app :: Sammy | eff) a) -> Eff (app :: Sammy | eff) a
+-- | Run a Sammy application, providing a default route.
+foreign import runApp :: forall eff. SammyApp -> Route -> Eff (sammy :: SAMMY | eff) Unit 
 
-get :: forall a eff. SammyApp -> Path -> (SammyCtx -> Eff (app :: Sammy | eff) a) -> Eff (app :: Sammy | eff) a
+-- | Associate a route and method with a handler function.
+-- |
+-- | The handler should return `false` to prevent the default behavior for a form submission.
+foreign import route :: forall a eff. SammyApp -> String -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
+
+-- | Read the parameters for a key from the URL.
+foreign import params :: forall eff. SammyCtx -> String -> Eff (sammy :: SAMMY | eff) (Array String)
+
+-- | Trigger an event.
+foreign import trigger :: forall eff. SammyApp -> String -> Eff (sammy :: SAMMY | eff) Unit
+
+-- | Bind an event to a handler function.
+foreign import bindEvent :: forall eff. SammyApp -> String -> (SammyCtx -> (Eff (sammy :: SAMMY | eff) Unit)) ->  Eff (sammy :: SAMMY | eff) Unit
+
+-- | Redirect to a Route
+foreign import redirect :: forall eff. SammyCtx -> Route -> Eff (sammy :: SAMMY | eff) Unit
+
+-- | Associate a route with a handler function for `GET` requests.
+get :: forall a eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 get app path fn = route app "get" path fn
 
-post :: forall a eff. SammyApp -> Path -> (SammyCtx -> Eff (app :: Sammy | eff) a) -> Eff (app :: Sammy | eff) a
+-- | Associate a route with a handler function for `POST` requests.
+post :: forall a eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 post app path fn = route app "post" path fn
 
-put :: forall a eff. SammyApp -> Path -> (SammyCtx -> Eff (app :: Sammy | eff) a) -> Eff (app :: Sammy | eff) a
+-- | Associate a route with a handler function for `PUT` requests.
+put :: forall a eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 put app path fn = route app "put" path fn
 
-del :: forall a eff. SammyApp -> Path -> (SammyCtx -> Eff (app :: Sammy | eff) a) -> Eff (app :: Sammy | eff) a
+-- | Associate a route with a handler function for `DELETE` requests.
+del :: forall a eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 del app path fn = route app "del" path fn
-
-foreign import params
-"""function params(smy){
-     return function(paramName){
-       return function(){
-         var p = smy.params[paramName];
-         if($.type(p) === 'string'){
-           return [p];
-         }else if($.type(p) === 'undefined'){
-           return [];
-         }else{
-           return p;
-         }
-       };
-     };
-   }""" :: forall eff. SammyCtx -> String -> Eff (app :: Sammy | eff) [String]
-
-foreign import trigger
-"""function trigger(smy){
-     return function(evt){
-       return function(){
-         smy.trigger(evt);
-       };
-     };
-   }""" :: forall eff. SammyApp -> String -> Eff (app :: Sammy | eff) Unit
-
-foreign import bindEvent
-"""function bindEvent(smy){
-     return function(evt){
-       return function(fn){
-         return function(){
-           smy.bind(evt,function(s){
-             fn(s)()
-           });
-         };
-       };
-     };
-   }""" :: forall eff. SammyApp -> String -> (SammyCtx -> (Eff (app :: Sammy | eff) Unit)) ->  Eff (app :: Sammy | eff) Unit
-
-foreign import redirect
-"""function redirect(smy){
-     return function(route){
-       return function(){
-         smy.redirect(route);
-       };
-     };
-   }""" :: forall eff. SammyCtx -> String -> Eff (app :: Sammy | eff) Unit
