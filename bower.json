@@ -18,7 +18,11 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-jquery": "~0.4.0",
-    "sammy": "~0.7.4"
+    "purescript-eff": "~0.1.0"
+  },
+  "devDependencies": {
+    "purescript-console": "~0.1.1",
+    "purescript-jquery": "~0.6.0",
+    "sammy": "~0.7.6"
   }
 }
