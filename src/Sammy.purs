@@ -17,9 +17,9 @@ module Sammy
   , Route()
   ) where
 
-import Prelude
+import Prelude (Unit)
 
-import Control.Monad.Eff
+import Control.Monad.Eff (Eff)
 
 -- | The Sammy context contains URL parameters, and provides the ability to redirect to other routes.
 foreign import data SammyCtx :: *
@@ -34,15 +34,15 @@ foreign import data SAMMY :: !
 type Route = String
 
 -- | Create a new Sammy application.
-foreign import sammy :: forall a eff. String -> Eff (sammy :: SAMMY | eff) SammyApp
+foreign import sammy :: forall eff. String -> Eff (sammy :: SAMMY | eff) SammyApp
 
 -- | Run a Sammy application, providing a default route.
-foreign import runApp :: forall eff. SammyApp -> Route -> Eff (sammy :: SAMMY | eff) Unit 
+foreign import runApp :: forall eff. SammyApp -> Route -> Eff (sammy :: SAMMY | eff) Unit
 
 -- | Associate a route and method with a handler function.
 -- |
 -- | The handler should return `false` to prevent the default behavior for a form submission.
-foreign import route :: forall a eff. SammyApp -> String -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
+foreign import route :: forall eff. SammyApp -> String -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 
 -- | Read the parameters for a key from the URL.
 foreign import params :: forall eff. SammyCtx -> String -> Eff (sammy :: SAMMY | eff) (Array String)
@@ -57,17 +57,17 @@ foreign import bindEvent :: forall eff. SammyApp -> String -> (SammyCtx -> (Eff 
 foreign import redirect :: forall eff. SammyCtx -> Route -> Eff (sammy :: SAMMY | eff) Unit
 
 -- | Associate a route with a handler function for `GET` requests.
-get :: forall a eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
+get :: forall eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 get app path fn = route app "get" path fn
 
 -- | Associate a route with a handler function for `POST` requests.
-post :: forall a eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
+post :: forall eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 post app path fn = route app "post" path fn
 
 -- | Associate a route with a handler function for `PUT` requests.
-put :: forall a eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
+put :: forall eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 put app path fn = route app "put" path fn
 
 -- | Associate a route with a handler function for `DELETE` requests.
-del :: forall a eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
+del :: forall eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 del app path fn = route app "del" path fn
