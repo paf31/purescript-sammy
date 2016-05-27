@@ -1,7 +1,5 @@
 "use strict";
 
-// module Sammy
-
 exports.sammy = function(selector) {
     return function() {
         return Sammy(selector, function(app) {
