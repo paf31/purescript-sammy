@@ -1,22 +1,11 @@
 module Test.Main (main) where
 
-import Prelude (bind, return, show, (<>), Unit)
-
-import Sammy (runApp, bindEvent, post, get, sammy, params, trigger, SAMMY)
-
+import Prelude
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (log, CONSOLE)
-import Control.Monad.Eff.JQuery as J
-import DOM (DOM)
+import Sammy (runApp, bindEvent, post, get, sammy, params, trigger, SAMMY)
 
-main :: forall t.
-        Eff
-          ( sammy :: SAMMY
-          , dom :: DOM
-          , console :: CONSOLE
-          | t
-          )
-          Unit
+main :: forall eff. Eff (sammy :: SAMMY, console :: CONSOLE | eff) Unit
 main = do
   app <- sammy "#main"
   get app "#/" (getHome app)
@@ -25,16 +14,13 @@ main = do
   runApp app "#/"
 
   where
-  getHome app _ = do
-    trigger app "loaded"
-    return false
+    getHome app _ = do
+      trigger app "loaded"
+      pure false
 
-  postFoo ctx = do
-    foo <- params ctx "foo"
-    mainDiv <- J.select "#main"
-    div <- J.create "<div>"
-    J.appendText ("POST " <> show foo) div
-    J.append div mainDiv
-    return false
+    postFoo ctx = do
+      foo <- params ctx "foo"
+      log ("POST " <> show foo)
+      pure false
 
-  eventHandler _ = log "Page loaded"
+    eventHandler _ = log "Page loaded"
