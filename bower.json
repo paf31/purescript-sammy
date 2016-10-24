@@ -17,6 +17,10 @@
     "Gruntfile.js",
     "package.json"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/purescript-contrib/purescript-sammy.git"            
+  },
   "dependencies": {
     "purescript-eff": "^2.0.0"
   },
