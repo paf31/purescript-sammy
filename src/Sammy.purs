@@ -18,7 +18,6 @@ module Sammy
   ) where
 
 import Prelude (Unit)
-
 import Control.Monad.Eff (Eff)
 
 -- | The Sammy context contains URL parameters, and provides the ability to redirect to other routes.
