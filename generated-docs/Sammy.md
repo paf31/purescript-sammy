@@ -5,7 +5,7 @@ This module provides low-level PureScript bindings to the Sammy.js web framework
 #### `SammyCtx`
 
 ``` purescript
-data SammyCtx :: *
+data SammyCtx :: Type
 ```
 
 The Sammy context contains URL parameters, and provides the ability to redirect to other routes.
@@ -13,7 +13,7 @@ The Sammy context contains URL parameters, and provides the ability to redirect 
 #### `SammyApp`
 
 ``` purescript
-data SammyApp :: *
+data SammyApp :: Type
 ```
 
 A Sammy application, which can be used to associate routes with behaviors.
@@ -21,7 +21,7 @@ A Sammy application, which can be used to associate routes with behaviors.
 #### `SAMMY`
 
 ``` purescript
-data SAMMY :: !
+data SAMMY :: Effect
 ```
 
 The effect associated with Sammy applications.
@@ -37,7 +37,7 @@ A route is just a string
 #### `sammy`
 
 ``` purescript
-sammy :: forall a eff. String -> Eff (sammy :: SAMMY | eff) SammyApp
+sammy :: forall eff. String -> Eff (sammy :: SAMMY | eff) SammyApp
 ```
 
 Create a new Sammy application.
@@ -53,7 +53,7 @@ Run a Sammy application, providing a default route.
 #### `route`
 
 ``` purescript
-route :: forall a eff. SammyApp -> String -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
+route :: forall eff. SammyApp -> String -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 ```
 
 Associate a route and method with a handler function.
@@ -79,7 +79,7 @@ Trigger an event.
 #### `bindEvent`
 
 ``` purescript
-bindEvent :: forall eff. SammyApp -> String -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Unit) -> Eff (sammy :: SAMMY | eff) Unit
+bindEvent :: forall eff. SammyApp -> String -> (SammyCtx -> (Eff (sammy :: SAMMY | eff) Unit)) -> Eff (sammy :: SAMMY | eff) Unit
 ```
 
 Bind an event to a handler function.
@@ -95,7 +95,7 @@ Redirect to a Route
 #### `get`
 
 ``` purescript
-get :: forall a eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
+get :: forall eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 ```
 
 Associate a route with a handler function for `GET` requests.
@@ -103,7 +103,7 @@ Associate a route with a handler function for `GET` requests.
 #### `post`
 
 ``` purescript
-post :: forall a eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
+post :: forall eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 ```
 
 Associate a route with a handler function for `POST` requests.
@@ -111,7 +111,7 @@ Associate a route with a handler function for `POST` requests.
 #### `put`
 
 ``` purescript
-put :: forall a eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
+put :: forall eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 ```
 
 Associate a route with a handler function for `PUT` requests.
@@ -119,7 +119,7 @@ Associate a route with a handler function for `PUT` requests.
 #### `del`
 
 ``` purescript
-del :: forall a eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
+del :: forall eff. SammyApp -> Route -> (SammyCtx -> Eff (sammy :: SAMMY | eff) Boolean) -> Eff (sammy :: SAMMY | eff) Unit
 ```
 
 Associate a route with a handler function for `DELETE` requests.

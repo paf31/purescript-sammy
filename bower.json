@@ -19,13 +19,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/purescript-contrib/purescript-sammy.git"            
+    "url": "git://github.com/purescript-contrib/purescript-sammy.git"
   },
   "dependencies": {
-    "purescript-eff": "^2.0.0"
+    "purescript-eff": "^3.0.0"
   },
   "devDependencies": {
-    "purescript-console": "^2.0.0",
+    "purescript-console": "^3.0.0",
     "sammy": "~0.7.6"
   }
 }

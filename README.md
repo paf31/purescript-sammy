@@ -4,7 +4,7 @@
 
 [PureScript](http://www.purescript.org/) bindings for [Sammy.js](http://sammyjs.org/), a Javascript, browser-based [Sinatra](http://www.sinatrarb.com/)-clone.
 
-- [Module Documentation](docs/Sammy.md)
+- [Module Documentation](generated-docs/Sammy.md)
 - [Example](test/Main.purs)
 
 ## Features

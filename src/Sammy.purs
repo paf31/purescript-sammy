@@ -18,16 +18,16 @@ module Sammy
   ) where
 
 import Prelude (Unit)
-import Control.Monad.Eff (Eff)
+import Control.Monad.Eff (kind Effect, Eff)
 
 -- | The Sammy context contains URL parameters, and provides the ability to redirect to other routes.
-foreign import data SammyCtx :: *
+foreign import data SammyCtx :: Type
 
 -- | A Sammy application, which can be used to associate routes with behaviors.
-foreign import data SammyApp :: *
+foreign import data SammyApp :: Type
 
 -- | The effect associated with Sammy applications.
-foreign import data SAMMY :: !
+foreign import data SAMMY :: Effect
 
 -- | A route is just a string
 type Route = String
